@@ -18,6 +18,18 @@ git submodule add https://github.com/o7g8/o7g8.github.io.git public
 
 ```
 
+Visual Studio Code extensions: 
+
+* Better TOML
+
+* Spell Right
+
+* Code Spell Checker
+
+* Insert Date String
+
+* Diff
+
 ## Useful links:
 
 * <https://opensource.com/article/18/3/start-blog-30-minutes-hugo>
