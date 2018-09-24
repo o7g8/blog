@@ -15,10 +15,11 @@ git submodule add https://github.com/avianto/hugo-kiera.git themes/kiera
 
 git submodule add https://github.com/o7g8/o7g8.github.io.git public
 
-
 ```
 
-Visual Studio Code extensions: 
+Address Git submodule issues with <https://stackoverflow.com/questions/12898278/issue-with-adding-common-code-as-git-submodule-already-exists-in-the-index>
+
+Visual Studio Code extensions:
 
 * Better TOML
 
@@ -30,7 +31,7 @@ Visual Studio Code extensions:
 
 * Diff
 
-## Useful links:
+## Useful links
 
 * <https://opensource.com/article/18/3/start-blog-30-minutes-hugo>
 
