@@ -6,7 +6,6 @@ tags = []
 categories = []
 +++
 
-
 ## Bootstrapping
 
 ```bash
@@ -31,6 +30,8 @@ Visual Studio Code extensions:
 
 * Diff
 
+TODO: Add the Google Analytics into the Kiera theme (see below).
+
 ## Useful links
 
 * <https://opensource.com/article/18/3/start-blog-30-minutes-hugo>
@@ -40,3 +41,7 @@ Visual Studio Code extensions:
 * <https://github.com/avianto/hugo-kiera>
 
 * <https://avianto.github.io/hugo-kiera/posts/style-guide/>
+
+* <http://cloudywithachanceofdevops.com/posts/2018/05/17/setting-up-google-analytics-on-hugo/> Need to edit ./themes/kiera/layouts/partials/header_includes.html
+
+* <https://gohugo.io/templates/internal/>
