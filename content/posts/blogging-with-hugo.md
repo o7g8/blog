@@ -45,3 +45,7 @@ TODO: Add the Google Analytics into the Kiera theme (see below).
 * <http://cloudywithachanceofdevops.com/posts/2018/05/17/setting-up-google-analytics-on-hugo/> Need to edit ./themes/kiera/layouts/partials/header_includes.html
 
 * <https://gohugo.io/templates/internal/>
+
+* <https://blog.uship.com/shipping-code/visual-studioresharper-level-productivity-in-vscode/>
+
+* <https://code.visualstudio.com/docs/getstarted/keybindings>
