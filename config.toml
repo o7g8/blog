@@ -11,6 +11,7 @@ enableEmoji = true
 pygmentsCodeFences = true
 
 disqusShortname = "codingarchitect"
+googleAnalytics = "UA-44958465-2"
 
 [author]
     name = "Oleg Grytsynevych"
