@@ -1,0 +1,32 @@
+baseurl = "https://www.example.org/"
+title = "Coding Architect"
+copyright = "Copyright &copy; 2018 - Oleg Grytsynevych"
+canonifyurls = true
+theme = "kiera"
+
+paginate = 3
+
+summaryLength = 30
+enableEmoji = true
+pygmentsCodeFences = true
+
+[author]
+    name = "Oleg Grytsynevych"
+    github = "https://github.com/o7g8"
+    gitlab = ""
+    linkedin = "https://www.linkedin.com/in/oleggrytsynevych/"
+    facebook = ""
+    twitter = ""
+    instagram = ""
+
+[params]
+    tagline = "You never know what you can do till you try."
+
+[[menu.main]]
+    name = "Home" #Name in the navigation bar
+    weight = 10 #The larger the weight, the more on the right this item will be
+    url = "/" #URL address
+[[menu.main]]
+    name = "Posts"
+    weight = 20
+    url = "/posts/"
