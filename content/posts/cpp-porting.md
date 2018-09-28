@@ -18,6 +18,8 @@ Here I will describe things which I have learned during my work on porting a fin
 
 <http://www.cplusplus.com/reference/>
 
+<http://eel.is/c++draft/>
+
 ### C++ features support by compilers
 
 [C++ compiler support](https://en.cppreference.com/w/cpp/compiler_support)
@@ -134,7 +136,7 @@ int main(int argc, char** argv) {
 
 ```
 
-Thing which works:
+Thing which works only in case if there are no other redefinitions of `Acos()` :
 
 ```cpp
 
@@ -167,4 +169,23 @@ int main(int argc, char** argv) {
 
 ```
 
+It seems like the only solution is to be explicit about namespace:
+
+```cpp
+
+namespace safe = principia::basutil;
+// then use safe::cos(..)
+
+```
+
+There are possible issues with macro which use the namespace-less invocations.
+
+Another potential issue is that C++ math is used instead of C.
+
 * Error: `there are no arguments to ‘X’ that depend on a template parameter, so a declaration of ‘X’ must be available`. See [Common Misunderstandings with GNU C++](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/4/html/Using_the_GNU_Compiler_Collection/c---misunderstandings.html), also [No arguments that depend on a template parameter](http://www.agapow.net/programming/cplusplus/no-arguments-that-depend-on-a-template-parameter/)
+
+* Missing `typename` here and there.
+
+* Error `expected primary-expression before ‘T’`.
+
+* Error `invalid use of template-name ‘X’ without an argument list`.
