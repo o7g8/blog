@@ -12,13 +12,15 @@ Here I will describe things which I have learned during my work on porting a fin
 
 ## Docs and References
 
-### Standard C++ Library References
+### C++ Resources
 
 <https://en.cppreference.com>
 
 <http://www.cplusplus.com/reference/>
 
-<http://eel.is/c++draft/>
+<http://eel.is/c++draft/> - draft of C++ standard.
+
+<https://www.ideone.com/> - online C++ compiler.
 
 ### C++ features support by compilers
 
@@ -33,6 +35,10 @@ Here I will describe things which I have learned during my work on porting a fin
 [The GNU C++ Library](https://gcc.gnu.org/onlinedocs/libstdc++/)
 
 [GNU: Options Controlling C++ Dialect](https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html)
+
+### preprocessor and predefined compiler-specific macros
+
+[MSVC/MSVC++ Predefined Macros](https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=vs-2017)
 
 [GNU: Common Predefined Macros](https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html)
 
@@ -189,3 +195,51 @@ Another potential issue is that C++ math is used instead of C.
 * Error `expected primary-expression before ‘T’`.
 
 * Error `invalid use of template-name ‘X’ without an argument list`.
+
+* Error `‘DBL_MAX’ was not declared in this scope`. See <https://stackoverflow.com/questions/23278930/what-is-dbl-max-in-c>
+
+* Error `error: ‘x’ was not declared in this scope`. It can point to many things, but if you are in a template class, then look if the `x` is declared in the parent class. In this case the fix is `this->x`.
+
+* Error `‘T’ does not name a type`. See <https://stackoverflow.com/questions/3608305/class-name-does-not-name-a-type-in-c>
+
+* Error `declaration does not declare anything`:
+
+```cpp
+
+aa::bb::cc;
+
+```
+
+Surprisingly the line, which doesn't make any sense, is processed by VS2013 compiler.
+
+* Error `invalid use of incomplete type 'T'`. See <https://stackoverflow.com/questions/20013901/im-getting-an-error-invalid-use-of-incomplete-type-class-map>
+
+* Error: `invalid initialization of non-const reference of type ‘T&’ from an rvalue of type ‘T’`. Fixed with turning the reference into a `const` reference>.
+
+```cpp
+
+X(MyType& arg = MyType()) {
+    ...
+}
+// to
+X(const MyType& arg = MyType()) {
+    ...
+}
+
+```
+
+* Error: `invalid use of‘::’`.
+
+* Error: `qualified name does not name a class before ‘{’ token`. The definitions like `class ns1::ns2::ClassName` are not accepted by GNU. And explicit namespace declaration is needed.
+
+* Error: `‘stdext’ has not been declared`. Indicates usage of MS-specific `stdext::checked_array_iterator`.  See <https://stackoverflow.com/questions/25716841/checked-array-iteratort-in-c11>
+
+## SonarQube with C/C++
+
+<https://github.com/SonarOpenCommunity/sonar-cxx/wiki/SonarQube-compatibility-matrix>
+
+<https://github.com/SonarOpenCommunity/sonar-cxx/wiki/Installation>
+
+<https://github.com/SonarOpenCommunity/sonar-cxx/wiki/Running-the-analysis>
+
+<https://github.com/SonarOpenCommunity/sonar-cxx/tree/master/sonar-cxx-plugin/src/samples/SampleProject>
