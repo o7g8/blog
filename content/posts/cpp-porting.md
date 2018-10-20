@@ -228,11 +228,69 @@ X(const MyType& arg = MyType()) {
 
 ```
 
-* Error: `invalid use of‘::’`.
+* Error: `invalid use of‘::’`. Obvious from the context.
 
 * Error: `qualified name does not name a class before ‘{’ token`. The definitions like `class ns1::ns2::ClassName` are not accepted by GNU. And explicit namespace declaration is needed.
 
-* Error: `‘stdext’ has not been declared`. Indicates usage of MS-specific `stdext::checked_array_iterator`.  See <https://stackoverflow.com/questions/25716841/checked-array-iteratort-in-c11>
+* Error: `‘stdext’ has not been declared`. Indicates usage of MS-specific `stdext::checked_array_iterator`.  See <https://stackoverflow.com/questions/25716841/checked-array-iteratort-in-c11> and <https://docs.microsoft.com/en-us/cpp/standard-library/checked-array-iterator-class?view=vs-2017>
+
+* Error: `explicit specialization in non-namespace scope ‘class ns:T’`. A MS-specific issue. See <https://stackoverflow.com/questions/5777236/gcc-error-explicit-specialization-in-non-namespace-scope/5777264> and <https://stackoverflow.com/questions/1723537/template-specialization-of-a-single-method-from-a-templated-class>
+
+* Error: `‘strcpy’ is nota member of ‘std’`. Include `<cstring>`.
+
+* Error: `taking address of temporary`. See <https://stackoverflow.com/questions/16481490/error-taking-address-of-temporary-fpermissive>
+
+* Error: `invalid initialization of non-const reference of type ‘T&’ from an rvalue of type ‘T’`. Use temp variable or make the function argument `const`.
+
+* Error: `duplicate explicit instantiation of ‘class T’`.  The error occurs when `T1` is the same as `T2` in the instantiation below:
+
+```cpp
+
+template class A<T1>;
+template class A<T2>;
+
+```
+
+Possible solutions:
+use `#ifdef`, use `std::conditional` <https://stackoverflow.com/questions/13925730/conditional-explicit-template-instantiation>, or use C++17 `if constexpr()` (requires GCC7, VS2017 15.3) <https://tech.io/playgrounds/2205/7-features-of-c17-that-will-simplify-your-code/constexpr-if>
+
+* Error: `no matching function for call to ‘ptr_fun(..)`. The best solution is to replace the obsolete `std::ptr_fun` with `std::function`.
+
+* Error: `specialization of ``T`` in different namespace`. Move the specialization into the class' namespace. See <https://stackoverflow.com/questions/25594644/warning-specialization-of-template-in-different-namespace>.
+
+* Error: `non-class, non-variable partial specialization ‘X’ is not allowed`. Needed to remove type parameters from the method definition:
+
+```cpp
+
+// from
+template <T>
+ReturnType<T> ns::method<T>(InputArg arg) {
+    //...
+}
+
+// to
+template <T>
+ReturnType<T> ns::method(InputArg arg) {
+    //...
+}
+
+```
+
+* Error: `‘auto_ptr’ is not a member of ‘std’`. Convert to `unique_ptr`, see <https://www.bfilipek.com/2017/05/cpp17-details-fixes-deprecation.html> and <https://clang.llvm.org/extra/clang-tidy/checks/modernize-replace-auto-ptr.html>
+
+* Change in zlib API, see <https://github.com/towardthesea/kh3ROS/blob/master/README~>
+
+* Error: `‘strcpy_s’ was not declared in this scope`.
+
+* Error: `‘memcpy_s’ was not declared in this scope`.
+
+* Error: vectors with const elements, see <https://stackoverflow.com/questions/42273710/const-vector-reference-arguments-in-c>
+
+## Linker error
+
+Linking phase certifies the entire porting process.
+
+* Linker error `multiple definition of ``T```. For specializations See <https://stackoverflow.com/questions/47544299/where-should-the-definition-of-an-explicit-specialization-of-a-class-template-be>
 
 ## SonarQube with C/C++
 
