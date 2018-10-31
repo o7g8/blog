@@ -36,7 +36,7 @@ Here I will describe things which I have learned during my work on porting a fin
 
 [GNU: Options Controlling C++ Dialect](https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html)
 
-### preprocessor and predefined compiler-specific macros
+### Preprocessor and predefined compiler-specific macros
 
 [MSVC/MSVC++ Predefined Macros](https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=vs-2017)
 
@@ -61,6 +61,12 @@ g++ -save-temps -c file.cc
 See: <https://stackoverflow.com/questions/35537350/gcc-optional-preprocessor-output-and-compilation-in-one-pass>
 
 [GNU: Preprocessor Output](https://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html)
+
+### Windows-specific types
+
+[Windows Data Types](https://docs.microsoft.com/en-us/windows/desktop/winprog/windows-data-types)
+
+[UNIX Compatibility](https://docs.microsoft.com/en-us/cpp/c-runtime-library/unix?view=vs-2017)
 
 ## Issues
 
@@ -285,6 +291,10 @@ ReturnType<T> ns::method(InputArg arg) {
 * Error: `‘memcpy_s’ was not declared in this scope`.
 
 * Error: vectors with const elements, see <https://stackoverflow.com/questions/42273710/const-vector-reference-arguments-in-c>
+
+* Error: `unknown type name ‘BOOL’`. See <https://docs.microsoft.com/en-us/windows/desktop/winprog/windows-data-types> and <https://stackoverflow.com/questions/8133074/error-unknown-type-name-bool/20743457>
+
+* Warning: `implicit declaration of function ‘_getcwd’`. Not really a warning, but an error. See <https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/getcwd-wgetcwd?view=vs-2017> and <http://pubs.opengroup.org/onlinepubs/009695399/functions/getcwd.html>
 
 ## Linker error
 
