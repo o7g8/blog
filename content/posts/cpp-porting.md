@@ -284,13 +284,13 @@ ReturnType<T> ns::method(InputArg arg) {
 
 * Error: `‘auto_ptr’ is not a member of ‘std’`. Convert to `unique_ptr`, see <https://www.bfilipek.com/2017/05/cpp17-details-fixes-deprecation.html> and <https://clang.llvm.org/extra/clang-tidy/checks/modernize-replace-auto-ptr.html>
 
-* Change in zlib API, see <https://github.com/towardthesea/kh3ROS/blob/master/README~>
+* If your code uses outdated `zlib` API, see <https://github.com/towardthesea/kh3ROS/blob/master/README~>
 
-* Error: `‘strcpy_s’ was not declared in this scope`.
+* Error: `‘strcpy_s’ was not declared in this scope`. See <https://en.cppreference.com/w/c/string/byte/strcpy> and <https://msdn.microsoft.com/en-us/library/td1esda9.aspx>.
 
-* Error: `‘memcpy_s’ was not declared in this scope`.
+* Error: `‘memcpy_s’ was not declared in this scope`. See <https://en.cppreference.com/w/c/string/byte/memcpy> and <https://msdn.microsoft.com/en-us/library/wes2t00f.aspx>.
 
-* Error: vectors with const elements, see <https://stackoverflow.com/questions/42273710/const-vector-reference-arguments-in-c>
+* Error: `vectors with const elements`. See <https://stackoverflow.com/questions/42273710/const-vector-reference-arguments-in-c>
 
 * Error: `unknown type name ‘BOOL’`. See <https://docs.microsoft.com/en-us/windows/desktop/winprog/windows-data-types> and <https://stackoverflow.com/questions/8133074/error-unknown-type-name-bool/20743457>
 
