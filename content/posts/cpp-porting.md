@@ -296,6 +296,42 @@ ReturnType<T> ns::method(InputArg arg) {
 
 * Warning: `implicit declaration of function ‘_getcwd’`. Not really a warning, but an error. See <https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/getcwd-wgetcwd?view=vs-2017> and <http://pubs.opengroup.org/onlinepubs/009695399/functions/getcwd.html>
 
+* Error: `‘_MAX_PATH’ undeclared here (not in a function)`. See <https://stackoverflow.com/questions/9449241/where-is-path-max-defined-in-linux>
+
+* Warning (an error): `implicit declaration of function ‘_fpreset’`. See <https://msdn.microsoft.com/en-us/library/kfy34skx.aspx>, <https://stackoverflow.com/questions/2231504/why-and-when-should-one-call-fpreset>. Not portable, don't call it on Linux.
+
+* Warning (an error): `implicit declaration of function ‘GetEnvironmentVariableA’`. A Windows-specific function <https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getenvironmentvariable>. Use `getenv` <http://man7.org/linux/man-pages/man3/getenv.3.html>
+
+* Warning (an error): `implicit declaration of function ‘GetCurrentProcessId’`. A Windows-specific function <https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-getcurrentprocessid>. Use `getpid` <http://man7.org/linux/man-pages/man2/getpid.2.html>
+
+* Warning (an error): `implicit declaration of function ‘SetLastError’`. A Windows-specific function <https://msdn.microsoft.com/en-us/library/windows/desktop/ms680627(v=vs.85).aspx>. Use `errno` instead <http://man7.org/linux/man-pages/man3/errno.3.html>
+
+* Warning (an error): `implicit declaration of function ‘GetLastError’`. A Windows-specific function <https://msdn.microsoft.com/en-us/library/windows/desktop/ms679360(v=vs.85).aspx>. Use `errno` instead <http://man7.org/linux/man-pages/man3/errno.3.html>
+
+### Unicode portability issues
+
+If the code uses Windows-specific `tchar.h`, then into <http://www.rensselaer.org/dept/cis/software/g77-mingw32/include/tchar.h> also read <https://www.tldp.org/HOWTO/Unicode-HOWTO-6.html>, <http://pubs.opengroup.org/onlinepubs/7908799/xsh/wchar.h.html>.
+
+* Missing `TCHAR`:
+
+```c
+
+ typedef wchar_t TCHAR;
+
+ ```
+
+* Warning: `implicit declaration of function ‘_T’`. Not a warning, but an error. It's Windows-specific macro, see <https://msdn.microsoft.com/en-us/library/dybsewaf.aspx> <https://social.msdn.microsoft.com/Forums/vstudio/en-US/8ce6ddef-3f1a-4033-a28b-54af91766e9f/teach-me-what-is-t?forum=vcgeneral>.
+
+```c
+
+#define _T(x) L##x
+
+```
+
+* Warning (an error): `implicit declaration of function ‘_tctime’`. See <https://msdn.microsoft.com/en-us/library/59w5xcdy.aspx>. Use `wcsftime` instead <http://pubs.opengroup.org/onlinepubs/7908799/xsh/wcsftime.html>. Exists also for Windows <https://msdn.microsoft.com/en-us/library/fe06s4ak.aspx>
+
+* Warning (an error): `implicit declaration of function ‘_ftprintf’`. Use `fwprintf` instead. See <https://msdn.microsoft.com/en-us/library/xkh07fe2.aspx>.
+
 ## Linker error
 
 Linking phase certifies the entire porting process.
