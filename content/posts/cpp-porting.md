@@ -296,7 +296,13 @@ ReturnType<T> ns::method(InputArg arg) {
 
 * Warning: `implicit declaration of function ‘_getcwd’`. Not really a warning, but an error. See <https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/getcwd-wgetcwd?view=vs-2017> and <http://pubs.opengroup.org/onlinepubs/009695399/functions/getcwd.html>
 
-* Error: `‘_MAX_PATH’ undeclared here (not in a function)`. See <https://stackoverflow.com/questions/9449241/where-is-path-max-defined-in-linux>
+* Error: `‘_MAX_PATH’ undeclared here (not in a function)` or the same error for `MAX_PATH`. See <https://stackoverflow.com/questions/9449241/where-is-path-max-defined-in-linux>.
+
+```c
+#include <linux/limits.h>
+#define MAX_PATH PATH_MAX
+#define _MAX_PATH PATH_MAX
+```
 
 * Warning (an error): `implicit declaration of function ‘_fpreset’`. See <https://msdn.microsoft.com/en-us/library/kfy34skx.aspx>, <https://stackoverflow.com/questions/2231504/why-and-when-should-one-call-fpreset>. Not portable, don't call it on Linux.
 
@@ -307,6 +313,14 @@ ReturnType<T> ns::method(InputArg arg) {
 * Warning (an error): `implicit declaration of function ‘SetLastError’`. A Windows-specific function <https://msdn.microsoft.com/en-us/library/windows/desktop/ms680627(v=vs.85).aspx>. Use `errno` instead <http://man7.org/linux/man-pages/man3/errno.3.html>
 
 * Warning (an error): `implicit declaration of function ‘GetLastError’`. A Windows-specific function <https://msdn.microsoft.com/en-us/library/windows/desktop/ms679360(v=vs.85).aspx>. Use `errno` instead <http://man7.org/linux/man-pages/man3/errno.3.html>
+
+* Warning (an error): `implicit declaration of function ‘_fpclass’`. See <https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/fpclass-fpclassf?view=vs-2017> and <https://www.systutorials.com/docs/linux/man/3-fpclassify/>, <https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/fpclassify?view=vs-2017>
+
+* Error: `‘INT_MAX’ undeclared (first use in this function)`. Add `#include <limits.h>`.
+
+* Error: `‘errno’ undeclared(first use in this function)`. Add `#include <errno.h>`.
+
+* Warning (an error): `implicit declaration of function ‘isspace’`. Add `#include <ctype.h>`.
 
 ### Unicode portability issues
 
@@ -331,6 +345,8 @@ If the code uses Windows-specific `tchar.h`, then into <http://www.rensselaer.or
 * Warning (an error): `implicit declaration of function ‘_tctime’`. See <https://msdn.microsoft.com/en-us/library/59w5xcdy.aspx>. Use `wcsftime` instead <http://pubs.opengroup.org/onlinepubs/7908799/xsh/wcsftime.html>. Exists also for Windows <https://msdn.microsoft.com/en-us/library/fe06s4ak.aspx>
 
 * Warning (an error): `implicit declaration of function ‘_ftprintf’`. Use `fwprintf` instead. See <https://msdn.microsoft.com/en-us/library/xkh07fe2.aspx>.
+
+* Error: `unknown type name ‘_TUCHAR’`. See <https://msdn.microsoft.com/en-us/library/c426s321.aspx>, use `wchar_t`.
 
 ## Linker error
 
