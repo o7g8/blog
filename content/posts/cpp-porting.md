@@ -1,14 +1,34 @@
 +++
-title = "Porting of a C++ library from MS VC++ to GNU"
-date = 2018-09-25T11:27:38+02:00
+title = "Lab notebook: Porting 550K LoC of C/C++ from Windows to Linux"
+date = 2018-11-28T00:51:50+01:00
 draft = true
 tags = []
-categories = ["C++", "Porting", "MSVC++", "GCC"]
+categories = ["C++", "C", "Porting", "MSVC", "GCC", "Linux"]
 +++
 
 > Assembly of Japanese bicycle require great peace of mind. (c) Robert Pirsig
 
-Here I will describe things which I have learned during my work on porting a financial (non-modern)C++ library from MSVC++ to GNU.
+As a part of Native Cloud transformation at my work I had to port a financial library from Windows to Linux. The library consists of 250K LoC of C and 300K LoC of C++ and some of the code is 20 years old. During the last 10 years it has been developed with MSVC++ exclusively for Windows. I wanted to port the code to GCC/Linux and maintain the MSVC++/Windows build error-free in the same time.
+
+About 70% of the porting efforts were spent on adaption of the legacy C++ code to C++14 standard. The porting took roughly 2 months.
+
+Here is the summary of my learning from the project:
+
+* Keep the log of faced errors and their solutions like this one. It's a huge time saver and helps answering code review questions as well.
+
+* Patience and determination are the keys. Don't be discouraged by megabytes of compilation error log at the start. Progress will be very slow in the beginning, but then things start to speedup almost exponentially: in the first 3 weeks I made only 3% of progress, then it took only 2 days to go from 60% to 100%. The "exponential law" applies to both compilation and linking errors.
+
+* Implement CI for the existing platform and for the new platform/compiler from very beginning. Keep your changes small, so it will be easy to revert the code to the last "good" state in case something goes wrong.
+
+* Use CMake, it's quite convenient and it allows to track progress as well.
+
+* Porting of Unicode-related code can be tricky.
+
+* Don't cut corners with `-fpermissive`.
+
+What I would do differently:
+
+* Establish a build with clang to get more understandable build error messages for C++ code.   
 
 ## Docs and References
 
@@ -18,9 +38,9 @@ Here I will describe things which I have learned during my work on porting a fin
 
 <http://www.cplusplus.com/reference/>
 
-<http://eel.is/c++draft/> - draft of C++ standard.
+[Draft of C++ standard](http://eel.is/c++draft/) 
 
-<https://www.ideone.com/> - online C++ compiler.
+[Online C++ compiler](https://www.ideone.com/)
 
 ### C++ features support by compilers
 
@@ -70,22 +90,30 @@ See: <https://stackoverflow.com/questions/35537350/gcc-optional-preprocessor-out
 
 [UNIX Compatibility](https://docs.microsoft.com/en-us/cpp/c-runtime-library/unix?view=vs-2017)
 
-## Issues
+## Faced issues
 
-Ambition is to get everything compiled without using `-fpermissive`.
-
-* Unrecognized `string_char_traits` as type argument of `basic_string`:
+* Error: `Unrecognized 'string_char_traits' as type argument of 'basic_string'`. See <https://gcc.gnu.org/onlinedocs/libstdc++/manual/strings.html>:
 
 ```cpp
 
-// convert
-typedef std::basic_string<char, string_char_traits<char>> scstring;
-// to
-typedef std::basic_string<char> scstring;
+// replace
+typedef std::basic_string<char, string_char_traits<char>> mystring;
+// with
+typedef std::basic_string<char> mystring;
 
 ```
 
-See <https://gcc.gnu.org/onlinedocs/libstdc++/manual/strings.html>
+* Missing `min` and `max` can be declared as:
+
+```c
+#ifndef max
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+#endif
+
+#ifndef min
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+#endif
+```
 
 * Error: `extra qualification 'xxx::' on member 'yyy...'`. See <https://stackoverflow.com/questions/11692806/error-extra-qualification-student-on-member-student-fpermissive>
 
@@ -95,110 +123,9 @@ See <https://gcc.gnu.org/onlinedocs/libstdc++/manual/strings.html>
 
 * Default parameters in function definitions instead function declarations.
 
-* Override of `<cmath>` definitions required:
-
-```cpp
-
-#ifndef __GNUC__
-#define _CMATH_
-#else
-#define _GLIBCXX_CMATH 1
-#endif
-
-```
-
-*It's an extremely bad idea, because it relies on inner workings of the header!* And it collapses when you compile it with `c++14`.
-
-* Global namespace pollution and override of standard functions:
-
-<https://stackoverflow.com/questions/11085916/why-are-some-functions-in-cmath-not-in-the-std-namespace>
-
-Thing which doesn't work (breaks once we get `#include <cmath>`):
-
-```cpp
-
-//#define _GLIBCXX_CMATH 1 // a hack which doesn't help either!!
-
-// #include <cmath> // pollutes global namespace and doesn't work
-#include <functional>
-#include <iostream>
-
-namespace principia {
-    namespace shadow {
-        #include <math.h>
-    }
-
-    namespace basutil {
-        inline double SafeWrap(std::function<double()> const &f) {
-            std::cout << "Hello\n";
-            return f();
-        }
-
-        inline double const acos(double const x) {
-			return SafeWrap([x](){return shadow::acos(x);});
-		}
-    }
-}
-
-using principia::basutil::acos;
-
-int main(int argc, char** argv) {
-    auto arg = 0.4;
-    std::cout << principia::basutil::acos(arg) << std::endl;
-    std::cout << acos(arg) << std::endl;
-}
-
-```
-
-Thing which works only in case if there are no other redefinitions of `Acos()` :
-
-```cpp
-
-#include <cmath> // pollutes global namespace
-#include <functional>
-#include <iostream>
-
-namespace principia {
-    namespace basutil {
-        inline double SafeWrap(std::function<double()> const &f) {
-            std::cout << "Hello\n";
-            return f();
-        } 
-
-        inline double const acos(double const x) {
-			return SafeWrap([x](){return std::acos(x);});
-		}
-    }
-}
-
-const auto& Acos = principia::basutil::acos;
-// using namespace principia::basutil; // won't work
-
-int main(int argc, char** argv) {
-    auto arg = 0.4;
-    std::cout << principia::basutil::acos(arg) << std::endl;
-    std::cout << Acos(arg) << std::endl;
-    //std::cout << acos(arg) << std::endl; // won't work
-}
-
-```
-
-It seems like the only solution is to be explicit about namespace:
-
-```cpp
-
-namespace safe = principia::basutil;
-// then use safe::cos(..)
-
-```
-
-There are possible issues with macro which use the namespace-less invocations.
-
-Another potential issue is that C++ math is used instead of C.
-
 * Error: `there are no arguments to ‘X’ that depend on a template parameter, so a declaration of ‘X’ must be available`. See [Common Misunderstandings with GNU C++](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/4/html/Using_the_GNU_Compiler_Collection/c---misunderstandings.html), also [No arguments that depend on a template parameter](http://www.agapow.net/programming/cplusplus/no-arguments-that-depend-on-a-template-parameter/)
 
-* Missing `typename` here and there.
+* Missing `typename` here and there. Use `auto` where applicable, otherwise add the `typename`.
 
 * Error `expected primary-expression before ‘T’`.
 
@@ -218,11 +145,11 @@ aa::bb::cc;
 
 ```
 
-Surprisingly the line, which doesn't make any sense, is processed by VS2013 compiler.
+Surprisingly the line, which doesn't make any sense, is processed by VS2013 compiler. Delete it.
 
 * Error `invalid use of incomplete type 'T'`. See <https://stackoverflow.com/questions/20013901/im-getting-an-error-invalid-use-of-incomplete-type-class-map>
 
-* Error: `invalid initialization of non-const reference of type ‘T&’ from an rvalue of type ‘T’`. Fixed with turning the reference into a `const` reference>.
+* Error: `invalid initialization of non-const reference of type ‘T&’ from an rvalue of type ‘T’`. Turn the reference into a `const` reference:
 
 ```cpp
 
@@ -326,7 +253,7 @@ ReturnType<T> ns::method(InputArg arg) {
 
 ### Unicode portability issues
 
-If the code uses Windows-specific `tchar.h`, then into <http://www.rensselaer.org/dept/cis/software/g77-mingw32/include/tchar.h> also read <https://www.tldp.org/HOWTO/Unicode-HOWTO-6.html>, <http://pubs.opengroup.org/onlinepubs/7908799/xsh/wchar.h.html>.
+If the code uses Windows-specific `tchar.h`, then look into <http://www.rensselaer.org/dept/cis/software/g77-mingw32/include/tchar.h> also read <https://www.tldp.org/HOWTO/Unicode-HOWTO-6.html>, <http://pubs.opengroup.org/onlinepubs/7908799/xsh/wchar.h.html>.
 
 * Missing `TCHAR`:
 
@@ -336,7 +263,7 @@ If the code uses Windows-specific `tchar.h`, then into <http://www.rensselaer.or
 
  ```
 
-* Warning: `implicit declaration of function ‘_T’`. Not a warning, but an error. It's Windows-specific macro, see <https://msdn.microsoft.com/en-us/library/dybsewaf.aspx> <https://social.msdn.microsoft.com/Forums/vstudio/en-US/8ce6ddef-3f1a-4033-a28b-54af91766e9f/teach-me-what-is-t?forum=vcgeneral>.
+* Warning (an error): `implicit declaration of function ‘_T’`. It's Windows-specific macro, see <https://msdn.microsoft.com/en-us/library/dybsewaf.aspx> <https://social.msdn.microsoft.com/Forums/vstudio/en-US/8ce6ddef-3f1a-4033-a28b-54af91766e9f/teach-me-what-is-t?forum=vcgeneral>.
 
 ```c
 
@@ -355,13 +282,3 @@ If the code uses Windows-specific `tchar.h`, then into <http://www.rensselaer.or
 Linking phase certifies the entire porting process.
 
 * Linker error `multiple definition of ``T```. For specializations See <https://stackoverflow.com/questions/47544299/where-should-the-definition-of-an-explicit-specialization-of-a-class-template-be>
-
-## SonarQube with C/C++
-
-<https://github.com/SonarOpenCommunity/sonar-cxx/wiki/SonarQube-compatibility-matrix>
-
-<https://github.com/SonarOpenCommunity/sonar-cxx/wiki/Installation>
-
-<https://github.com/SonarOpenCommunity/sonar-cxx/wiki/Running-the-analysis>
-
-<https://github.com/SonarOpenCommunity/sonar-cxx/tree/master/sonar-cxx-plugin/src/samples/SampleProject>
