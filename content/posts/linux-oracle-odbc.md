@@ -24,7 +24,7 @@ I choose the free Oracle Instant Client.
 
 Here are the recommended unixODBC Driver Manager versions for Linux/UNIX:
 
-Instant Client version | unixODBC version | O/S with the unixODBC version
+Instant Client version | unixODBC version | O/S with the required unixODBC version
 --- | --- | ---
 Instant Client 12.2 | 2.3.4 | Ubuntu 18.04
 Instant Client 12.1 | 2.3.1 | Ubuntu 16.04
@@ -226,6 +226,39 @@ SQL>
 ```
 
 The ODBC part is done.
+
+## Accessing Oracle DB from Dyalog APL/Linux
+
+Make Dyalog aware of ODBC and Oracle configuration:
+
+```bash
+echo 'export ODBCINI=/etc/odbc.ini' >> ~/.dyalog/dyalog.config
+echo 'export TNS_ADMIN='$TNS_ADMIN >> ~/.dyalog/dyalog.config
+```
+
+```apl
+      )load sqapl
+/opt/mdyalog/17.0/64/unicode/ws/sqapl.dws saved Mon Jun 11 05:36:59 2018
+      ⍝ ensure the necessary environment variables are initialized
+      GetEnvironment 'TNS_ADMIN'
+/usr/lib/oracle/12.1/client64/network/admin
+      GetEnvironment 'ODBCINI'
+/etc/odbc.ini
+
+      ⍝ look into available DSNs, connect to a DSN and fetch some data
+      SQA.Init''
+0  SQAPL loaded from: cxdya63u64v.so Using default translation no aplunicd.ini present
+      SQA.DSN''
+0   OracleODBC-12c  Oracle 12c ODBC driver
+      SQA.Connect 'c1' 'OracleODBC-12c' 'password' 'user'
+0
+      SQA.Do 'c1' 'select count(*) from dual'
+0  c1.s1   1       6
+      SQA.Do'c1' 'SELECT TO_CHAR (SYSDATE, ''MM-DD-YYYY HH24 :MI :SS'') "NOW" FROM DUAL;'
+0  c1.s1    11-27-2018 17 :10 :00        6
+      SQA.Close 'c1'
+0
+```
 
 ## References
 
