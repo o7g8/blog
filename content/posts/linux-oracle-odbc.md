@@ -1,10 +1,10 @@
-# Making ODBC work with APL/Linux and Oracle
+# Making Oracle ODBC driver working with Dyalog APL/Linux
 
 There are two alternative ODBC implementations available on Linux: [unixODBC](http://www.unixodbc.org/) and [iODBC](http://www.iodbc.org).You can read about differences between the projects in the article on StackOverflow [What are the functional differences between iODBC and unixODBC?](https://stackoverflow.com/questions/7548825/what-are-the-functional-differences-between-iodbc-and-unixodbc). At the time of writing, the unixODBC is more actively developed than iODBC.
 
 Another reason I'm looking into ODBC on Linux is because I want to get working DB API in Dyalog APL (described in the [Dyalog APL SQAPL Interface Guide](http://docs.dyalog.com/17.0/SQL%20Interface%20Guide.pdf)) on Linux with Oracle database. The API supports unixODBC, therefore the rest of article will concentrate on unixODBC.
 
-## Choice of an Oracle ODBC drivers, available on Linux
+## Choice of Oracle ODBC drivers, available on Linux
 
 There is number of Oracle ODBC driver implementations:
 
@@ -14,13 +14,13 @@ There is number of Oracle ODBC driver implementations:
 
 * [Easysoft Oracle® ODBC Driver](https://www.easysoft.com/products/data_access/odbc_oracle_driver/index.html#section=tab-1): paid, offers 14 days trial, [documentation](https://www.easysoft.com/products/data_access/odbc_oracle_driver/getting_started.html).
 
-* [Progress DataDirect Oracle ODBC driver](https://www.progress.com/odbc/oracle-database): paid. Funny enough Oracle itself recommends the driver in their own product [Oracle® Fusion Middleware Metadata Repository Builder](https://docs.oracle.com/cd/E25178_01/fusionapps.1111/e20836/deploy_rpd.htm).
+* [Progress DataDirect Oracle ODBC driver](https://www.progress.com/odbc/oracle-database): paid. Dyalog recommends the driver for SQAPL Interface. Funny enough Oracle itself recommends the driver in their own product [Oracle® Fusion Middleware Metadata Repository Builder](https://docs.oracle.com/cd/E25178_01/fusionapps.1111/e20836/deploy_rpd.htm).
 
 * [Oracle Instant Client ODBC driver](https://www.oracle.com/technetwork/database/database-technologies/instant-client/overview/index.html): free.
 
 I choose the free Oracle Instant Client.
 
-## Installation of Oracle client and Oracle ODBC driver
+## Installation of Oracle client
 
 Here are the recommended unixODBC Driver Manager versions for Linux/UNIX:
 
@@ -51,6 +51,7 @@ Make the Oracle libraries available in `LD_LIBRARY_PATH` and initialize system-w
 $ echo /usr/lib/oracle/12.1/client64/lib/ | sudo tee  /etc/ld.so.conf.d/oracle.conf && sudo chmod o+r /etc/ld.so.conf.d/oracle.conf
 $ sudo ldconfig
 $ echo 'export ORACLE_HOME=/usr/lib/oracle/12.1/client64' | sudo tee /etc/profile.d/oracle.sh && sudo chmod o+r /etc/profile.d/oracle.sh
+$ . /etc/profile.d/oracle.sh
 ```
 
 Ensure all library references are resolved for Sql*Plus:
@@ -96,7 +97,7 @@ SQL> SELECT COUNT(*) FROM DUAL;
          1
 ```
 
-If you are not planning to use Sql*Plus in the future, you may safely remove it and it will not affecting your ODBC setup.
+If you don't plan to use Sql*Plus in the future, you may safely remove package `oracle-instantclient12.1-sqlplus` without affecting your ODBC setup.
 
 ## Installation of unixODBC
 
@@ -124,7 +125,111 @@ $ ldd /usr/lib/oracle/12.1/client64/lib/libsqora.so.12.1
         libltdl.so.7 => /usr/lib/x86_64-linux-gnu/libltdl.so.7 (0x00007fc954367000)
 ```
 
+Initialize `TNS_ADMIN` and populate `tnsnames.ora`.
+
+```bash
+$ echo 'export TNS_ADMIN=$ORACLE_HOME/network/admin' | sudo tee -a /etc/profile.d/oracle.sh
+$ . /etc/profile.d/oracle.sh
+
+$ sudo mkdir -p $ORACLE_HOME/network/admin
+$ cat | sudo tee $ORACLE_HOME/network/admin/tnsnames.ora
+# paste tnsnames content and do Ctrl-D
+```
+
+Consult location of unixODBC files:
+
+```bash
+$ odbcinst -j
+unixODBC 2.3.1
+DRIVERS............: /etc/odbcinst.ini
+SYSTEM DATA SOURCES: /etc/odbc.ini
+FILE DATA SOURCES..: /etc/ODBCDataSources
+USER DATA SOURCES..: /home/vagrant/.odbc.ini
+SQLULEN Size.......: 8
+SQLLEN Size........: 8
+SQLSETPOSIROW Size.: 8
+```
+
+Configure `/etc/odbcinst.ini` as:
+
+```ini
+[Oracle 12c ODBC driver]
+Description     = Oracle ODBC driver for Oracle 12c
+Driver          = /usr/lib/oracle/12.1/client64/lib/libsqora.so.12.1
+Setup           =
+FileUsage       =
+CPTimeout       =
+CPReuse         =
+```
+
+Configure `/etc/odbc.ini` as:
+
+```ini
+[OracleODBC-12c]
+Application Attributes = T
+Attributes = W
+BatchAutocommitMode = IfAllSuccessful
+BindAsFLOAT = F
+CloseCursor = F
+DisableDPM = F
+DisableMTS = T
+Driver = Oracle 12c ODBC driver
+DSN = OracleODBC-12c
+EXECSchemaOpt =
+EXECSyntax = T
+Failover = T
+FailoverDelay = 10
+FailoverRetryCount = 10
+FetchBufferSize = 64000
+ForceWCHAR = F
+Lobs = T
+Longs = T
+MaxLargeData = 0
+MetadataIdDefault = F
+QueryTimeout = T
+ResultSets = T
+ServerName = <!!your TNS name goes here!!>
+SQLGetData extensions = F
+Translation DLL =
+Translation Option = 0
+DisableRULEHint = T
+UserID =
+StatementCache=F
+CacheBufferSize=20
+UseOCIDescribeAny=F
+SQLTranslateErrors=F
+MaxTokenSize=8192
+AggregateSQLType=FLOAT
+```
+
+Test the ODBC connection with ODBC client:
+
+```bash
+$ isql "OracleODBC-12c" <user> <password> -v
++---------------------------------------+
+| Connected!                            |
+|                                       |
+| sql-statement                         |
+| help [tablename]                      |
+| quit                                  |
+|                                       |
++---------------------------------------+
+SQL> SELECT COUNT(*) FROM DUAL;
++-----------------------------------------+
+| COUNT(*)                                |
++-----------------------------------------+
+| 1                                       |
++-----------------------------------------+
+SQLRowCount returns -1
+1 rows fetched
+SQL>
+```
+
+The ODBC part is done.
+
 ## References
+
+* /usr/share/oracle/12.1/client64/ODBC_IC_Readme_Unix.html
 
 * [Oracle Instant Client](https://help.ubuntu.com/community/Oracle%20Instant%20Client)
 
