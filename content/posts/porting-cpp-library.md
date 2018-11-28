@@ -2,8 +2,8 @@
 title = "Lab notebook: Porting 550K LoC of C/C++ from Windows to Linux"
 date = 2018-11-28T00:17:11Z
 draft = false
-tags = []
-categories = ["C++", "C", "Porting", "MSVC", "GCC", "Linux"]
+tags = ["C++", "C", "porting", "MSVC", "gcc", "Linux"]
+categories = [] 
 +++
 
 As a part of Native Cloud transformation at my work I've ported a financial library from Windows to Linux. The library consists of 250K LoC of C and 300K LoC of C++. Some of the code is 20 years old. During the last 10 years it has been developed with MSVC++ exclusively for Windows. I wanted to port the code to GCC/Linux and keep the MSVC++/Windows build error-free in the same time.
