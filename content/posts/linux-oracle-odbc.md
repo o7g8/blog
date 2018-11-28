@@ -1,3 +1,11 @@
++++
+title = "Install Oracle ODBC driver on Linux"
+date = 2018-11-27T00:51:50+01:00
+draft = true
+tags = []
+categories = ["Linux", "Oracle", "ODBC", "DB", "Ubuntu"]
++++
+
 # Making Oracle ODBC driver working with Dyalog APL/Linux
 
 There are two alternative ODBC implementations available on Linux: [unixODBC](http://www.unixodbc.org/) and [iODBC](http://www.iodbc.org).You can read about differences between the projects in the article on StackOverflow [What are the functional differences between iODBC and unixODBC?](https://stackoverflow.com/questions/7548825/what-are-the-functional-differences-between-iodbc-and-unixodbc). At the time of writing, the unixODBC is more actively developed than iODBC.

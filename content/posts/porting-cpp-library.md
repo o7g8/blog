@@ -1,7 +1,7 @@
 +++
 title = "Lab notebook: Porting 550K LoC of C/C++ from Windows to Linux"
-date = 2018-11-28T00:51:50+01:00
-draft = true
+date = 2018-11-28T00:17:11Z
+draft = false
 tags = []
 categories = ["C++", "C", "Porting", "MSVC", "GCC", "Linux"]
 +++

@@ -32,6 +32,14 @@ Visual Studio Code extensions:
 
 TODO: Add the Google Analytics into the Kiera theme (see below).
 
+Examples:
+
+```bash
+hugo new posts/blogging-with-hugo.md
+hugo
+hugo server -D
+```
+
 ## Useful links
 
 * <https://opensource.com/article/18/3/start-blog-30-minutes-hugo>
