@@ -6,9 +6,7 @@ tags = []
 categories = ["C++", "C", "Porting", "MSVC", "GCC", "Linux"]
 +++
 
-> Assembly of Japanese bicycle require great peace of mind. (c) Robert Pirsig
-
-As a part of Native Cloud transformation at my work I had to port a financial library from Windows to Linux. The library consists of 250K LoC of C and 300K LoC of C++ and some of the code is 20 years old. During the last 10 years it has been developed with MSVC++ exclusively for Windows. I wanted to port the code to GCC/Linux and maintain the MSVC++/Windows build error-free in the same time.
+As a part of Native Cloud transformation at my work I've ported a financial library from Windows to Linux. The library consists of 250K LoC of C and 300K LoC of C++. Some of the code is 20 years old. During the last 10 years it has been developed with MSVC++ exclusively for Windows. I wanted to port the code to GCC/Linux and keep the MSVC++/Windows build error-free in the same time.
 
 About 70% of the porting efforts were spent on adaption of the legacy C++ code to C++14 standard. The porting took roughly 2 months.
 
@@ -277,8 +275,10 @@ If the code uses Windows-specific `tchar.h`, then look into <http://www.renssela
 
 * Error: `unknown type name ‘_TUCHAR’`. See <https://msdn.microsoft.com/en-us/library/c426s321.aspx>, use `wchar_t`.
 
-## Linker error
+## Linker errors
 
 Linking phase certifies the entire porting process.
+
+* Link order of static libraries is important. See <http://www.network-theory.co.uk/docs/gccintro/gccintro_18.html> and <https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking>
 
 * Linker error `multiple definition of ``T```. For specializations See <https://stackoverflow.com/questions/47544299/where-should-the-definition-of-an-explicit-specialization-of-a-class-template-be>
