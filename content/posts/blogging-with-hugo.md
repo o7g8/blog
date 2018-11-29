@@ -40,6 +40,8 @@ hugo
 hugo server -D
 ```
 
+Ensure the timestamp in the article is in `iso` format: Ctrl-Alt-Shift-I -> iso
+
 ## Useful links
 
 * <https://opensource.com/article/18/3/start-blog-30-minutes-hugo>

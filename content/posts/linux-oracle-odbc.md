@@ -1,20 +1,30 @@
 +++
-title = "Install Oracle ODBC driver on Linux"
-date = 2018-11-27T00:51:50+01:00
-draft = true
-tags = []
-categories = ["Linux", "Oracle", "ODBC", "DB", "Ubuntu"]
+title = "Installation of Oracle ODBC driver in Linux"
+date = 2018-11-29T18:57:19Z
+draft = false
+tags = ["Linux", "Oracle", "ODBC", "DB"]
+categories = []
 +++
 
 # Making Oracle ODBC driver working with Dyalog APL/Linux
 
-There are two alternative ODBC implementations available on Linux: [unixODBC](http://www.unixodbc.org/) and [iODBC](http://www.iodbc.org).You can read about differences between the projects in the article on StackOverflow [What are the functional differences between iODBC and unixODBC?](https://stackoverflow.com/questions/7548825/what-are-the-functional-differences-between-iodbc-and-unixodbc). At the time of writing, the unixODBC is more actively developed than iODBC.
+There are two alternative ODBC implementations available on Linux:
 
-Another reason I'm looking into ODBC on Linux is because I want to get working DB API in Dyalog APL (described in the [Dyalog APL SQAPL Interface Guide](http://docs.dyalog.com/17.0/SQL%20Interface%20Guide.pdf)) on Linux with Oracle database. The API supports unixODBC, therefore the rest of article will concentrate on unixODBC.
+* [unixODBC](http://www.unixodbc.org/)
+
+* [iODBC](http://www.iodbc.org)
+
+You can read about differences between the projects in the article [What are the functional differences between iODBC and unixODBC?](https://stackoverflow.com/questions/7548825/what-are-the-functional-differences-between-iodbc-and-unixodbc)
+
+Which of them to choose? At the time of writing, the unixODBC is more actively developed than iODBC and unixODBC looks more popular as well.
+
+My goal is to to get working [Dyalog APL SQAPL](http://docs.dyalog.com/17.0/SQL%20Interface%20Guide.pdf) on Linux with Oracle database. The SQAPL supports unixODBC, therefore I'm firm with my decision :)
 
 ## Choice of Oracle ODBC drivers, available on Linux
 
 There is number of Oracle ODBC driver implementations:
+
+* [Oracle Instant Client ODBC driver](https://www.oracle.com/technetwork/database/database-technologies/instant-client/overview/index.html): free. The ODBC driver is distributed by Oracle itself.
 
 * [Simba Oracle ODBC Driver](https://www.simba.com/drivers/oracle-odbc-jdbc/): paid, offers 20 days trial, [documentation](https://www.simba.com/products/Oracle/doc/ODBC_InstallGuide/linux/content/odbc/or/configuring/odbcini.htm)
 
@@ -24,13 +34,11 @@ There is number of Oracle ODBC driver implementations:
 
 * [Progress DataDirect Oracle ODBC driver](https://www.progress.com/odbc/oracle-database): paid. Dyalog recommends the driver for SQAPL Interface. Funny enough Oracle itself recommends the driver in their own product [Oracle® Fusion Middleware Metadata Repository Builder](https://docs.oracle.com/cd/E25178_01/fusionapps.1111/e20836/deploy_rpd.htm).
 
-* [Oracle Instant Client ODBC driver](https://www.oracle.com/technetwork/database/database-technologies/instant-client/overview/index.html): free.
-
 I choose the free Oracle Instant Client.
 
 ## Installation of Oracle client
 
-Here are the recommended unixODBC Driver Manager versions for Linux/UNIX:
+Here is the table with compatible versions of unixODBC Driver Manager and Instant Client:
 
 Instant Client version | unixODBC version | O/S with the required unixODBC version
 --- | --- | ---
@@ -38,15 +46,17 @@ Instant Client 12.2 | 2.3.4 | Ubuntu 18.04
 Instant Client 12.1 | 2.3.1 | Ubuntu 16.04
 Instant Client 11g | 2.2.11, 2.2.14 | Ubuntu 14.04
 
-The guidelines below are the "shortest path to success" which are compiled from several articles describing installation of the Instant Client on Ubuntu. Some of the articles you may find in the `References` section. I use Ubuntu 16.04 and therefore I download following files corresponding to 12.1 from [Instant Client Downloads for Linux x86-64 (64-bit)](https://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html):
+The guidelines below are the "shortest path to success" which are compiled from articles which I have found. Some of the articles you may find in the `References` section. 
 
-* oracle-instantclient12.1-basiclite-12.1.0.2.0-1.x86_64.rpm
+I use Ubuntu 16.04 and therefore I download following packages of Instant Client 12.1 from [Instant Client Downloads for Linux x86-64 (64-bit)](https://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html):
 
-* oracle-instantclient12.1-odbc-12.1.0.2.0-1.x86_64.rpm
+* oracle-instantclient12.1-basiclite-12.1.0.2.0-1.x86_64.rpm - Oracle client libraries
 
-* oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm (needed only for troubleshooting)
+* oracle-instantclient12.1-odbc-12.1.0.2.0-1.x86_64.rpm - the ODBC driver
 
-Execute in the directory with the downloaded packages:
+* oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm - SQL*Plus, it is needed only for troubleshooting and therefore the package be skipped
+
+Install the downloaded packages and their dependencies:
 
 ```bash
 $ sudo apt install alien libaio1
@@ -62,7 +72,7 @@ $ echo 'export ORACLE_HOME=/usr/lib/oracle/12.1/client64' | sudo tee /etc/profil
 $ . /etc/profile.d/oracle.sh
 ```
 
-Ensure all library references are resolved for Sql*Plus:
+Ensure all library references are resolved for SQL*Plus:
 
 ```bash
 $ ldd `which sqlplus64`
@@ -84,7 +94,7 @@ $ ldd `which sqlplus64`
         libaio.so.1 => /lib/x86_64-linux-gnu/libaio.so.1 (0x00007f3ceab89000)
 ```
 
-Test your database connection using Sql*Plus. The successful session should look like this:
+Test your database connection using SQL*Plus. The successful session should look like this:
 
 ```bash
 $ sqlplus64 username/password@//dbhost:1521/SID
@@ -105,7 +115,7 @@ SQL> SELECT COUNT(*) FROM DUAL;
          1
 ```
 
-If you don't plan to use Sql*Plus in the future, you may safely remove package `oracle-instantclient12.1-sqlplus` without affecting your ODBC setup.
+If you don't plan to use SQL*Plus in the future, you may safely remove package `oracle-instantclient12.1-sqlplus` without affecting your ODBC setup.
 
 ## Installation of unixODBC
 
@@ -141,10 +151,10 @@ $ . /etc/profile.d/oracle.sh
 
 $ sudo mkdir -p $ORACLE_HOME/network/admin
 $ cat | sudo tee $ORACLE_HOME/network/admin/tnsnames.ora
-# paste tnsnames content and do Ctrl-D
+# paste tnsnames content here and finish with Ctrl-D
 ```
 
-Consult location of unixODBC files:
+Look where unixODBC expects to find configuration files:
 
 ```bash
 $ odbcinst -j
@@ -210,10 +220,10 @@ MaxTokenSize=8192
 AggregateSQLType=FLOAT
 ```
 
-Test the ODBC connection with ODBC client:
+Test the ODBC connection with unixODBC client:
 
 ```bash
-$ isql "OracleODBC-12c" <user> <password> -v
+$ isql "OracleODBC-12c" <dbuser> <dbpassword> -v
 +---------------------------------------+
 | Connected!                            |
 |                                       |
@@ -233,40 +243,9 @@ SQLRowCount returns -1
 SQL>
 ```
 
-The ODBC part is done.
+If your output looks like this, then the ODBC part is done.
 
-## Accessing Oracle DB from Dyalog APL/Linux
-
-Make Dyalog aware of ODBC and Oracle configuration:
-
-```bash
-echo 'export ODBCINI=/etc/odbc.ini' >> ~/.dyalog/dyalog.config
-echo 'export TNS_ADMIN='$TNS_ADMIN >> ~/.dyalog/dyalog.config
-```
-
-```apl
-      )load sqapl
-/opt/mdyalog/17.0/64/unicode/ws/sqapl.dws saved Mon Jun 11 05:36:59 2018
-      ⍝ ensure the necessary environment variables are initialized
-      GetEnvironment 'TNS_ADMIN'
-/usr/lib/oracle/12.1/client64/network/admin
-      GetEnvironment 'ODBCINI'
-/etc/odbc.ini
-
-      ⍝ look into available DSNs, connect to a DSN and fetch some data
-      SQA.Init''
-0  SQAPL loaded from: cxdya63u64v.so Using default translation no aplunicd.ini present
-      SQA.DSN''
-0   OracleODBC-12c  Oracle 12c ODBC driver
-      SQA.Connect 'c1' 'OracleODBC-12c' 'password' 'user'
-0
-      SQA.Do 'c1' 'select count(*) from dual'
-0  c1.s1   1       6
-      SQA.Do'c1' 'SELECT TO_CHAR (SYSDATE, ''MM-DD-YYYY HH24 :MI :SS'') "NOW" FROM DUAL;'
-0  c1.s1    11-27-2018 17 :10 :00        6
-      SQA.Close 'c1'
-0
-```
+In my next article I describe how to make the Dyalog APL work with the unixODBC.
 
 ## References
 
