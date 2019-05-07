@@ -1,0 +1,235 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Coding Architect</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Oleg Grytsynevych" />
+  <meta name="generator" content="Hugo 0.49" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://o7g8.github.io/css/styles.css" />
+</head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://o7g8.github.io/">Coding Architect</a>
+            </h1>
+
+      <ul id="social-media">
+         
+        <li><a href="https://www.linkedin.com/in/https://www.linkedin.com/in/oleggrytsynevych/"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+         
+        <li><a href="https://github.com/https://github.com/o7g8"><i class="fa fa-github fa-lg" aria-hidden="true"></i></a></li>
+           
+      </ul>
+      
+      <p><em>You never know what you can do till you try.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://o7g8.github.io/">
+                <i class="fa-li fa  fa-lg"></i><span>Home</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://o7g8.github.io/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://o7g8.github.io/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Accessing Oracle DB from Dyalog APL in Linux using SQAPL</h1>
+
+    
+        <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2018-11-29T19:06:24Z">Nov 29, 2018</time>
+        </li>
+        
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="https://o7g8.github.io/tags/linux/">#Linux</a>
+                
+                    , 
+                    <a href="https://o7g8.github.io/tags/oracle/">#Oracle</a>
+                
+                    , 
+                    <a href="https://o7g8.github.io/tags/odbc/">#ODBC</a>
+                
+                    , 
+                    <a href="https://o7g8.github.io/tags/db/">#DB</a>
+                
+                    , 
+                    <a href="https://o7g8.github.io/tags/apl/">#APL</a>
+                
+                    , 
+                    <a href="https://o7g8.github.io/tags/sqapl/">#SQAPL</a>
+                
+            </em>
+        </li>
+        
+
+        <li>1 min read</li>
+    </ul>
+</aside>
+    
+
+    
+
+<p>Install Oracle ODBC driver as it&rsquo;s described in <a href="https://o7g8.github.io/posts/linux-oracle-odbc/">Installation of Oracle ODBC driver in Linux</a>.</p>
+
+<p>Make Dyalog APL aware of ODBC and Oracle configurations:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#39;export ODBCINI=/etc/odbc.ini&#39;</span> &gt;&gt; ~/.dyalog/dyalog.config
+echo <span style="color:#e6db74">&#39;export TNS_ADMIN=&#39;</span>$TNS_ADMIN &gt;&gt; ~/.dyalog/dyalog.config</code></pre></div>
+<p>Start an APL session and test your DB access:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-apl" data-lang="apl">      )load sqapl
+<span style="color:#a6e22e">/</span>opt<span style="color:#a6e22e">/</span>mdyalog<span style="color:#a6e22e">/</span><span style="color:#ae81ff">17.0</span><span style="color:#a6e22e">/</span><span style="color:#ae81ff">64</span><span style="color:#a6e22e">/</span>unicode<span style="color:#a6e22e">/</span>ws<span style="color:#a6e22e">/</span>sqapl<span style="color:#a6e22e">.</span>dws saved Mon Jun <span style="color:#ae81ff">11</span> <span style="color:#ae81ff">05</span>:<span style="color:#ae81ff">36</span>:<span style="color:#ae81ff">59</span> <span style="color:#ae81ff">2018</span>
+      <span style="color:#75715e">⍝ ensure the necessary environment variables are initialized</span>
+      GetEnvironment <span style="color:#e6db74">&#39;TNS_ADMIN&#39;</span>
+<span style="color:#a6e22e">/</span>usr<span style="color:#a6e22e">/</span>lib<span style="color:#a6e22e">/</span>oracle<span style="color:#a6e22e">/</span><span style="color:#ae81ff">12.1</span><span style="color:#a6e22e">/</span>client64<span style="color:#a6e22e">/</span>network<span style="color:#a6e22e">/</span>admin
+      GetEnvironment <span style="color:#e6db74">&#39;ODBCINI&#39;</span>
+<span style="color:#a6e22e">/</span>etc<span style="color:#a6e22e">/</span>odbc<span style="color:#a6e22e">.</span>ini
+
+      <span style="color:#75715e">⍝ look into available DSNs, connect to a DSN and fetch some data</span>
+      SQA<span style="color:#a6e22e">.</span>Init<span style="color:#e6db74">&#39;&#39;</span>
+<span style="color:#ae81ff">0</span>  SQAPL loaded from: cxdya63u64v<span style="color:#a6e22e">.</span>so Using default translation no aplunicd<span style="color:#a6e22e">.</span>ini present
+      SQA<span style="color:#a6e22e">.</span>DSN<span style="color:#e6db74">&#39;&#39;</span>
+<span style="color:#ae81ff">0</span>   OracleODBC<span style="color:#f92672">-</span><span style="color:#ae81ff">12</span>c  Oracle <span style="color:#ae81ff">12</span>c ODBC driver
+      SQA<span style="color:#a6e22e">.</span>Connect <span style="color:#e6db74">&#39;c1&#39;</span> <span style="color:#e6db74">&#39;OracleODBC-12c&#39;</span> <span style="color:#e6db74">&#39;password&#39;</span> <span style="color:#e6db74">&#39;user&#39;</span>
+<span style="color:#ae81ff">0</span>
+      SQA<span style="color:#a6e22e">.</span>Do <span style="color:#e6db74">&#39;c1&#39;</span> <span style="color:#e6db74">&#39;select count(*) from dual&#39;</span>
+<span style="color:#ae81ff">0</span>  c1<span style="color:#a6e22e">.</span>s1   <span style="color:#ae81ff">1</span>       <span style="color:#ae81ff">6</span>
+      SQA<span style="color:#a6e22e">.</span>Do<span style="color:#e6db74">&#39;c1&#39;</span> <span style="color:#e6db74">&#39;SELECT TO_CHAR (SYSDATE, &#39;&#39;MM-DD-YYYY HH24 :MI :SS&#39;&#39;) &#34;NOW&#34; FROM DUAL;&#39;</span>
+<span style="color:#ae81ff">0</span>  c1<span style="color:#a6e22e">.</span>s1    <span style="color:#ae81ff">11</span><span style="color:#f92672">-</span><span style="color:#ae81ff">27</span><span style="color:#f92672">-</span><span style="color:#ae81ff">2018</span> <span style="color:#ae81ff">17</span> :<span style="color:#ae81ff">10</span> :<span style="color:#ae81ff">00</span>        <span style="color:#ae81ff">6</span>
+      SQA<span style="color:#a6e22e">.</span>Close <span style="color:#e6db74">&#39;c1&#39;</span>
+<span style="color:#ae81ff">0</span></code></pre></div>
+<h2 id="references">References</h2>
+
+<ul>
+<li><p><a href="http://docs.dyalog.com/17.0/SQL%20Interface%20Guide.pdf">Dyalog SQL Interface Guide</a></p></li>
+
+<li><p><a href="https://o7g8.github.io/posts/linux-oracle-odbc/">Installation of Oracle ODBC driver in Linux</a></p></li>
+</ul>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://o7g8.github.io/posts/linux-oracle-odbc/"><i class="fa fa-chevron-circle-left"></i> Installation of Oracle ODBC driver in Linux</a>
+        </li>
+        
+        
+        <li>
+            <a href="https://o7g8.github.io/posts/apache-spark-dotnet/">Running Apache Spark/.NET and getting data from Oracle DB <i class="fa fa-chevron-circle-right"></i> </a>
+        </li>
+        
+    </ul>
+</section>
+    
+        <section class="comments-block">
+      <button id="show-comments" style="display: none;"><i class="fa fa-comments-o"></i> Add/View Comments</button>
+</section>
+
+<section id="disqus_thread"></section>
+
+<script>
+      (function () {
+            
+            
+            if (window.location.hostname == "localhost")
+                  return;
+
+            var disqus_loaded = false;
+            var disqus_shortname = 'codingarchitect';
+            var disqus_button = document.getElementById("show-comments");
+
+            disqus_button.style.display = "";
+            disqus_button.addEventListener("click", disqus, false);
+
+            function disqus() {
+
+                  if (!disqus_loaded) {
+                        disqus_loaded = true;
+
+                        var e = document.createElement("script");
+                        e.type = "text/javascript";
+                        e.async = true;
+                        e.src = "//" + disqus_shortname + ".disqus.com/embed.js";
+                        (document.getElementsByTagName("head")[0] ||
+                              document.getElementsByTagName("body")[0])
+                        .appendChild(e);
+
+                        
+                        document.getElementById("show-comments").style.display = "none";
+                  }
+            }
+
+            
+            var hash = window.location.hash.substr(1);
+            if (hash.length > 8) {
+                  if (hash.substring(0, 8) == "comment-") {
+                        disqus();
+                  }
+            }
+
+            
+            if (/bot|google|baidu|bing|msn|duckduckgo|slurp|yandex/i.test(navigator.userAgent)) {
+                  disqus();
+            }
+      })();
+</script>
+    
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright &copy; 2018 - Oleg Grytsynevych | 
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://o7g8.github.io/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="https://o7g8.github.io/js/scripts.js"></script>
+</body>
+
+</html>
