@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://o7g8.github.io/about/</loc>
+    <lastmod>2018-09-24T02:26:35+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/posts/apache-spark-dotnet/</loc>
+    <lastmod>2019-05-06T16:00:05+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/posts/apl-linux-oracle-odbc/</loc>
+    <lastmod>2018-11-29T19:06:24+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/posts/linux-oracle-odbc/</loc>
+    <lastmod>2018-11-29T18:57:19+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/posts/porting-cpp-library/</loc>
+    <lastmod>2018-11-28T00:17:11+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/posts/vscode-remote-debugging/</loc>
+    <lastmod>2018-09-23T23:00:45+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/categories/.net/</loc>
+    <lastmod>2019-05-06T16:00:05+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/apl/</loc>
+    <lastmod>2018-11-29T19:06:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/c/</loc>
+    <lastmod>2018-11-28T00:17:11+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/c&#43;&#43;/</loc>
+    <lastmod>2018-11-28T00:17:11+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/categories/</loc>
+    <lastmod>2019-05-06T16:00:05+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/</loc>
+    <lastmod>2018-09-24T02:26:35+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/db/</loc>
+    <lastmod>2018-11-29T19:06:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/debugging/</loc>
+    <lastmod>2018-09-23T23:00:45+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/gcc/</loc>
+    <lastmod>2018-11-28T00:17:11+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/gdb/</loc>
+    <lastmod>2018-09-23T23:00:45+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/linux/</loc>
+    <lastmod>2018-11-29T19:06:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/msvc/</loc>
+    <lastmod>2018-11-28T00:17:11+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/odbc/</loc>
+    <lastmod>2018-11-29T19:06:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/oracle/</loc>
+    <lastmod>2018-11-29T19:06:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/categories/oracle/</loc>
+    <lastmod>2019-05-06T16:00:05+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/porting/</loc>
+    <lastmod>2018-11-28T00:17:11+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/posts/</loc>
+    <lastmod>2019-05-06T16:00:05+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/categories/spark/</loc>
+    <lastmod>2019-05-06T16:00:05+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/sqapl/</loc>
+    <lastmod>2018-11-29T19:06:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/</loc>
+    <lastmod>2018-11-29T19:06:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/tags/visual-studio-code/</loc>
+    <lastmod>2018-09-23T23:00:45+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://o7g8.github.io/categories/windows/</loc>
+    <lastmod>2019-05-06T16:00:05+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C&#43;&#43; on Coding Architect</title>
+    <link>https://o7g8.github.io/tags/c&#43;&#43;/</link>
+    <description>Recent content in C&#43;&#43; on Coding Architect</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright &amp;copy; 2018 - Oleg Grytsynevych</copyright>
+    <lastBuildDate>Wed, 28 Nov 2018 00:17:11 +0000</lastBuildDate>
+    
+	<atom:link href="https://o7g8.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Lab notebook: Porting 550K LoC of C/C&#43;&#43; from Windows to Linux</title>
+      <link>https://o7g8.github.io/posts/porting-cpp-library/</link>
+      <pubDate>Wed, 28 Nov 2018 00:17:11 +0000</pubDate>
+      
+      <guid>https://o7g8.github.io/posts/porting-cpp-library/</guid>
+      <description>As a part of Native Cloud transformation at my work I&amp;rsquo;ve ported a financial library from Windows to Linux. The library consists of 250K LoC of C and 300K LoC of C++.</description>
+    </item>
+    
+    <item>
+      <title>Remote debugging of C/C&#43;&#43; code with Visual Studio Code</title>
+      <link>https://o7g8.github.io/posts/vscode-remote-debugging/</link>
+      <pubDate>Sun, 23 Sep 2018 23:00:45 +0000</pubDate>
+      
+      <guid>https://o7g8.github.io/posts/vscode-remote-debugging/</guid>
+      <description>I&amp;rsquo;m currently porting a proprietary C/C++ financial calculations library to Linux. During the work I need to debug the code on a remote Linux machine.
+In the article I will describe two ways of remote debugging of C/C++ code executed on Linux using Visual Studio Code.</description>
+    </item>
+    
+  </channel>
+</rss>
