@@ -1,5 +1,5 @@
 +++
-title = "Running Apache Spark/.NET and getting data from Oracle DB"
+title = "Running Apache Spark/.NET and getting data into it from Oracle DB"
 date = 2019-05-06T16:00:05+02:00
 draft = false
 tags = []
@@ -8,9 +8,9 @@ categories = ["Windows", ".NET", "Spark", "Oracle"]
 
 ## Running Apache Spark/.NET on Windows
 
-MS has announced support of [.NET for Apache Spark](https://dotnet.microsoft.com/apps/data/spark).
+Microsoft has announced support of [.NET for Apache Spark](https://dotnet.microsoft.com/apps/data/spark).
 
-The main Spark/.NET documentation is [here](https://github.com/dotnet/spark/blob/master/README.md).
+The main Apache Spark/.NET documentation is [here](https://github.com/dotnet/spark/blob/master/README.md).
 
 In the article I will highlight steps necessary to get the .NET for Apache Spark running in Windows.
 
